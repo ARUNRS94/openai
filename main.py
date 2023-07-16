@@ -12,20 +12,9 @@ from langchain.llms import OpenAI
 from langchain.vectorstores import Chroma
 import unstructured
 
-os.environ["OPENAI_API_KEY"] = '*****'
+os.environ["OPENAI_API_KEY"] = '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'
 
 PERSIST = False
-
-pdf_file_path='data/Examplesoflegaltext_Legislatingforaccesstomedicines.pdf'
-
-def read_pdf(file_path):
-  with pdfplumber.open(file_path) as pdf:
-    document_text = ""
-    for page in pdf.pages:
-      document_text += page.extract_text()
-  return document_text
-
-pdf_text = read_pdf(pdf_file_path)
 
 query = None
 if len(sys.argv) > 1:
@@ -36,7 +25,6 @@ if PERSIST and os.path.exists("persist"):
   vectorstore = Chroma(persist_directory="persist", embedding_function=OpenAIEmbeddings())
   index = VectorStoreIndexWrapper(vectorstore=vectorstore)
 else:
-  #loader = TextLoader("data/data.txt") # Use this line if you only need data.txt
   loader = DirectoryLoader("data/")
   if PERSIST:
     index = VectorstoreIndexCreator(vectorstore_kwargs={"persist_directory":"persist"}).from_loaders([loader])
